@@ -14,11 +14,15 @@ public class Main {
         List<Product> productList = Arrays.asList(product1, product2);
 
         VendingMachine vendingMachine = new VendingMachine(productList);
-        System.out.println(vendingMachine.printStatus());
 
         vendingMachine.powerButton();
+        vendingMachine.pushDown();
+        vendingMachine.pushDown();
 
-        System.out.println(vendingMachine.printStatus());
+        vendingMachine.buy();
 
+        vendingMachine.pushUp();
+
+        vendingMachine.buy();
     }
 }

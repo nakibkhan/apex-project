@@ -1,10 +1,13 @@
 package services;
 
 import model.Product;
+import util.ProductIndexCalculator;
 
 import java.util.List;
 public class VendingMachine {
     List<Product> products;
+
+    int productIndex = 0;
 
     public VendingMachine(List<Product> products)   {
         this.products = products;
@@ -14,6 +17,7 @@ public class VendingMachine {
 
     public void powerButton() {
         on = !on;
+        printStatus();
     }
 
     public boolean isOn() {
@@ -24,7 +28,22 @@ public class VendingMachine {
         return on && products.stream().noneMatch(Product::isAvailable);
     }
 
-    public String printStatus() {
+    public void pushUp()    {
+        productIndex = ProductIndexCalculator.determineIndexUp(productIndex, products.size());
+        printStatus();
+    }
+
+    public void pushDown()    {
+        productIndex = ProductIndexCalculator.determineIndexDown(productIndex, products.size());
+        printStatus();
+    }
+
+    public void buy() {
+        products.get(productIndex).sellProduct();
+        printStatus();
+    }
+
+    public String status() {
         if(this.isSoldOut())    {
             return "-------------------- SOLD OUT -----------------------";
         }
@@ -34,12 +53,18 @@ public class VendingMachine {
         }
 
         StringBuilder sb = new StringBuilder();
-        for(Product product: products)  {
-            sb.append("Name : " + product.getName() + ", Price " + product.getPrice() + ", Amount Available : " + product.getCount());
-            sb.append("\n");
-        }
+
+        sb.append("Name : ")
+                .append(products.get(productIndex).getName())
+                .append(", ")
+                .append("Price ").append(products.get(productIndex).getPrice())
+                .append(", ")
+                .append("Amount Available : ").append(products.get(productIndex).getCount());
 
         return sb.toString();
     }
 
+    public void printStatus()   {
+        System.out.println(this.status());
+    }
 }

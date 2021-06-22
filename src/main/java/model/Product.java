@@ -2,8 +2,8 @@ package model;
 
 public class Product {
     String name;
-    int count = 0;
-    double price = 0.00;
+    int count;
+    double price;
 
     public Product(String name, int count, double price)    {
         this.name = name;
